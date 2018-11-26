@@ -1,0 +1,9 @@
+css
+.DS_Store
+.sass-cache
+.vscode
+*.log
+node_modules
+Thumbs.db
+.cache
+dist
