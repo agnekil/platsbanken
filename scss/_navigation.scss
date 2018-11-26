@@ -75,13 +75,17 @@ button {
   flex: 1;
 }
 
-label {
+#jobSearch label {
+  display: none;
+}
+
+.choosePage label {
   display: none;
 }
 
 .choosePage {
   input {
-    margin-left: -.5rem;
+    margin-left: -0.5rem;
   }
 }
 

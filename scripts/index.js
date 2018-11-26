@@ -30,7 +30,7 @@ let searchVariables = {
   page: 1,
   lastPage: 0,
   numberOfJobs: 0,
-  field: "",
+  field: 1,
   fieldName: ""
 };
 
@@ -49,7 +49,7 @@ function getAdsAndPrint() {
       console.log(result);
       searchVariables.numberOfJobs = result.matchningslista.antal_platsannonser;
       searchVariables.lastPage = result.matchningslista.antal_sidor;
-      jobs.innerHTML = "<h5>Lediga tjänster inom " + searchVariables.fieldName + " i länet: " + searchVariables.numberOfJobs + "</h5>";
+      jobs.innerHTML = "<h5>Lediga tjänster i länet: " + searchVariables.numberOfJobs + "</h5>";
       pageNumber();
       getCardInfo(result);
     });
@@ -83,7 +83,7 @@ function getCardInfo(result) {
   }
 }
 
-//Hämstar annonstext
+//Hämtar annonstext
 function readAddText(id) {
   let url = `http://api.arbetsformedlingen.se/af/v0/platsannonser/${id}`;
   fetch(url)
@@ -98,16 +98,10 @@ function readAddText(id) {
     });
 }
 
-// $("#readMore").click(function(){
-//   $("#adText").toggle();
-// https://www.w3schools.com/howto/howto_js_collapsible.asp
-// });
-
 //Väljer antal annonser som visas
 function displayNOfAds(event) {
-  event.preventDefault();
   const form = event.target;
-  searchVariables.newNumber = form.number.value;
+  searchVariables.newNumber = form.value;
   getAdsAndPrint();
 }
 
@@ -166,19 +160,6 @@ function fetchCategory() {
     });
 }
 
-// Aktiveras bara när vi ändrar i dropdown, när vi trycker på specifikt län dras kortet för det länet ut.
-slct1.addEventListener("change", function() {
-  // Nedan använder jag "this" funktionen som ersätter "slct1"
-  searchVariables.lanid = this.value;
-  getAdsAndPrint();
-});
-
-category.addEventListener("change", function() {
-  searchVariables.field = this.value;
-  console.log("This: " + this.name);
-  getAdsAndPrint();
-});
-
 //Generera val av sidnummer
 function pageNumber() {
   for (let i = 1; i <= searchVariables.lastPage; i++) {
@@ -218,11 +199,21 @@ fetchCategory();
 //EVENT LISTENERS
 
 //Antal annonser
-getDOM.nOfAdsForm.addEventListener("submit", displayNOfAds);
+getDOM.nOfAdsForm.addEventListener("change", displayNOfAds);
 //Fritextsök
 getDOM.jobSearch.addEventListener("submit", handleSearch);
 //Navigera till vald sida i dropdown
 getDOM.choosePage.addEventListener("submit", navToPage);
+// Aktiveras bara när vi ändrar i dropdown, när vi trycker på specifikt län dras kortet för det länet ut.
+slct1.addEventListener("change", function() {
+  // Nedan använder jag "this" funktionen som ersätter "slct1"
+  searchVariables.lanid = this.value;
+  getAdsAndPrint();
+});
+category.addEventListener("change", function() {
+  searchVariables.field = this.value;
+  getAdsAndPrint();
+});
 //Sidnavigering mha blädderknappar
 document.getElementById("forwardBtn").addEventListener("click", pageForward);
 document.getElementById("backBtn").addEventListener("click", pageBack);
